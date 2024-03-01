@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  ul{
+    display: flex;
+  }
+  i{
+    font-size: 1.5rem;
+  }
+  li{list-style: none;
+  padding: 0.4rem;
+  }
+  nav{
+    border-bottom: 1px solid black;
+    /* position: fixed !important; */
+    /* top: 0px !important; */
+    width: 100%;
+  }
+</style>
+<body>
+  <nav class="navbar">
+
+    <div>
+      <h3>Intagram</h3>
+    </div>
+
+    <div class="srh">
+       <form action="/search" method="get">
+        <input type="search" name="search">
+        <button class="btn btn-primary">search</button>
+       </form>
+    </div>
+
+    <div class="ico">
+      <ul>
+       <li>
+        <form action="/home"><i class="fa-solid fa-house"></i></form>
+       </li>
+       <li>
+        <form action="/reel">reel</form>
+       </li>
+       <li>
+        <form action="/message"><i class="fa-regular fa-message"></i></form>
+       </li>
+       <li>
+        <form action="/newpost">pst</form>
+       </li>
+       
+       <li>
+        <form action="/profile"><i class="fa-regular fa-user"></i></form>
+       </li>
+       <% if(user){ %>
+       <li>
+        <form action="/logout" method="post"><button>logout</button></form>
+       </li>
+       <% } %>
+      </ul>
+    </div>
+
+  </nav>
+
+</body>
+</html>

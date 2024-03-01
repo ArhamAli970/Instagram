@@ -1,0 +1,26 @@
+<%- layout("layout/boilerplate.ejs")  %>
+
+<style>.mar{margin: 2rem;}
+
+</style>
+
+
+<div class="mar">
+<form action="/createPost/<%=id%>" method="post">
+    <div class="form-group ">
+        <div>
+      <label for="url">URL image</label>
+      <input type="text" name="url" class="form-control" id="url" required>
+    </div>
+    </div>
+    <div class="form-group">
+    <div>
+        <label for="caption">caption</label>
+        <textarea class="form-control" name="caption" id="caption" rows="3"></textarea>
+    </div>
+    </div>
+    <br>
+    <button type="submit"  class="signBt btn btn-primary">Create Post</button>
+
+  </form>
+</div>

@@ -1,0 +1,172 @@
+<%- layout("layout/boilerplate.ejs")  %>
+
+
+<style>
+    .acc{
+        display: flex;
+        /* border: 1px solid black; */
+        padding-top: 1rem;
+    
+ /* FONT-FAMILY
+-apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif */
+    }
+    ul{
+        display: flex;
+    }
+    li{padding: 0.6rem;}
+    .prof{flex: 30%;}
+    .fol{flex: 70%; display: flex;
+     flex-direction: column;
+     /* justify-items; */
+     }
+    .btn{border-radius:0.8rem;
+        /* background-color: #efefef !important; */
+        border:1px solid black !important;
+     }
+     label{width: 100%; height: 100%;}
+     .user1{
+        margin: 1rem;
+        border-radius: 50%;
+        height: 14rem;width: 14rem;
+    
+     }
+     #myImg{width: 100%; height: 100%; object-fit: cover; border-radius: 50%;}
+     .pstAdd{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+}
+.post{
+  margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.usPost{
+  height:25rem;
+  flex: 40%;
+  margin: 1rem;
+  position: relative;
+
+  
+}
+.usPostsub:hover{
+  cursor: pointer;
+  width: 85%;
+  opacity: 0.7;
+}
+
+.usPostsub:hover+h5{
+visibility: visible;
+}
+
+.usPostsub{
+  transition: 0.3s;
+  object-fit: cover;
+
+height: 100%;
+width: 80%; 
+}
+h5{
+    position: absolute;
+    /* z-index: 12; */
+  top: 50%;
+  left: 40%;
+  visibility: hidden;
+  /* text-align: center; */
+}
+</style>
+
+<!-- -->
+<div class="acc">
+        
+    <div class="prof">
+        <div class="user1">
+        <label for="img">   
+          <img id="myImg" src="<%=data.pic%>" alt="user_Img">
+        </label>
+        </div>
+      
+        <input  style="display: none;" accept="image/*" type="file" id="img" onchange="fileInputChange(event)">
+    </div>
+
+
+<div class="fol">
+    <ul>
+      <li><h4><%= data.username.username  %></h4></li>
+
+       <% if(user.username===data.username.username){%> 
+       <form action="/editProf/<%=data._id%>" method="get">
+           <button class="btn ">Edit Profile</button>
+       </form>
+       <% } %>
+    </ul>
+    <ul>
+            <li> <b> <%= posts.length  %> </b> posts </li>
+            <li> <b> <%= data.followers.length%></b> followers</li>
+            <li> <b> <%= data.following.length%></b> following</li>
+    </ul>
+    <ul>
+      <li>  <p><%= data.bio %></p></li>
+    </ul>
+    
+    
+
+</div>
+
+    
+
+
+    
+</div>
+
+<hr>
+<div class="pstAdd">
+    <p>POSTS</p>
+    <% if(user.username===data.username.username) {%>
+      <div>
+      <form action="/createPost/<%= data.username._id  %>" method="get">
+        <button class="btn btn-primary">Create Post</button>
+      </form>
+      </div> 
+
+      <% } %>
+</div>
+
+
+
+<div class="post">
+  <% for(post of posts){ %> 
+
+    <div class="usPost">
+      <img class="usPostsub" src="<%= post.url%>" alt="">
+      <h5><i class="fa-regular fa-heart"></i> <%=post.like.length  %> </h5>
+    </div>
+
+  <% } %>
+
+</div>
+
+
+<script>
+function fileInputChange(e){
+  let file=e.target.files[0];
+//   console.log(file);
+  if(file){
+    const read=new FileReader();
+    read.onload=(e)=>{
+        document.querySelector('#myImg').src=e.target.result;
+        saveImgBackend(e.target.result);
+    }
+
+    read.readAsDataURL(file)
+  }
+
+async  function saveImgBackend(url){
+    let h5=document.querySelector('h5').innerText;
+    await axios.post('/saveImg',{url,h5});
+  }
+  
+}
+    
+</script>
