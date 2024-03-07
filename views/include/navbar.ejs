@@ -21,42 +21,81 @@
     /* top: 0px !important; */
     width: 100%;
   }
+  .navbar h3{
+  
+  font-family: "Satisfy", cursive;
+  font-weight: 400;
+  font-style: normal;
+
+  }
+  .proPic{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* object-fit; */
+  }
+  .proPic img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  ul form button{
+    border: none;
+    background-color: white;
+  }
 </style>
 <body>
   <nav class="navbar">
 
     <div>
-      <h3>Intagram</h3>
+      <h3>Instagram</h3>
     </div>
 
     <div class="srh">
        <form action="/search" method="get">
-        <input type="search" name="search">
-        <button class="btn btn-primary">search</button>
+        <input type="search" name="search"><button class="btn btn-primary">search</button>
        </form>
     </div>
 
     <div class="ico">
       <ul>
        <li>
-        <form action="/home"><i class="fa-solid fa-house"></i></form>
+        <form action="/insta" method="get"><button><i class="fa-solid fa-house"></i></button></form>
        </li>
        <li>
-        <form action="/reel">reel</form>
+        <form action="/notification" method="get">
+          <button><i class="fa-regular fa-heart"></i></button></form>
        </li>
        <li>
-        <form action="/message"><i class="fa-regular fa-message"></i></form>
+        <form action="/message">
+          <button>
+          <i class="fa-regular fa-message"></i>
+        </button>
+        </form>
        </li>
        <li>
-        <form action="/newpost">pst</form>
+        <form action="/createPost/<%=user._id %>" method="get">
+          <button>
+          <i class="fa-solid fa-signs-post"></i>
+        </button>
+        </form>
        </li>
        
        <li>
-        <form action="/profile"><i class="fa-regular fa-user"></i></form>
+        <form action="/instagram" method="get">
+          <button>
+            <div class="proPic">
+              <img src="<%= data.pic %>" alt="">
+            </div>
+          </button>
+
+        </form>
        </li>
        <% if(user){ %>
        <li>
-        <form action="/logout" method="post"><button>logout</button></form>
+        <form action="/logout" method="post"><button><i
+          style="color: red;" class="fa-solid fa-right-from-bracket"></i></button></form>
        </li>
        <% } %>
       </ul>

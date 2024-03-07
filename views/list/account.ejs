@@ -75,6 +75,10 @@ h5{
   visibility: hidden;
   /* text-align: center; */
 }
+.folB{
+  border: none !important;
+  background-color: white !important;
+}
 </style>
 
 <!-- -->
@@ -83,7 +87,7 @@ h5{
     <div class="prof">
         <div class="user1">
         <label for="img">   
-          <img id="myImg" src="<%=data.pic%>" alt="user_Img">
+          <img id="myImg" src="<%=dem.pic%>" alt="user_Img">
         </label>
         </div>
       
@@ -93,21 +97,36 @@ h5{
 
 <div class="fol">
     <ul>
-      <li><h4><%= data.username.username  %></h4></li>
+      <li><h4><%= dem.username.username  %></h4></li>
 
-       <% if(user.username===data.username.username){%> 
+       <% if(user.username===dem.username.username){%> 
        <form action="/editProf/<%=data._id%>" method="get">
            <button class="btn ">Edit Profile</button>
        </form>
        <% } %>
     </ul>
     <ul>
-            <li> <b> <%= posts.length  %> </b> posts </li>
-            <li> <b> <%= data.followers.length%></b> followers</li>
-            <li> <b> <%= data.following.length%></b> following</li>
+      <button class="btn folB">
+            <li>
+               <b> <%= posts.length  %> </b> posts </li>
+         
+        </button>
+       
+        <li> 
+            <form action="/getFollowers/<%= dem._id %>" method="get">
+              <button class="btn folB">
+                <b> <%= dem.followers.length%></b> followers
+              </button>
+            </form>
+          </li>
+
+            
+            <form action="/getFollowing" >
+            <li> <button class="btn folB" ><b> <%= dem.following.length%></b> following</button> </li>
+          </form>
     </ul>
     <ul>
-      <li>  <p><%= data.bio %></p></li>
+      <li>  <p><%= dem.bio %></p></li>
     </ul>
     
     
@@ -123,7 +142,7 @@ h5{
 <hr>
 <div class="pstAdd">
     <p>POSTS</p>
-    <% if(user.username===data.username.username) {%>
+    <% if(user.username===dem.username.username) {%>
       <div>
       <form action="/createPost/<%= data.username._id  %>" method="get">
         <button class="btn btn-primary">Create Post</button>

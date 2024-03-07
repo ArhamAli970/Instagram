@@ -44,39 +44,51 @@
         margin: 1rem;
     }
 
+    .rmv{
+        border-radius: 1rem !important;
+        border: 0.3px solid black !important;
+        background-color: lightgray !important;
+    }
+    .rmv:hover{
+        opacity: 0.6;
+    }
 
 
 </style>
 
-<h4>Recommendations</h4>
+<div>
+    
 
  <div class="kanPost ">
+    <% for(us of ans) { %>
 
-    <% for(us of allAcc) { %>
-
-           <% if(!user._id.equals(us.username._id) && !data.following.includes(us.username.username)){ %> 
+     
         <div class="userFoll ">
             
             <div class="userProf">
                 <div class="userpc">
-                  <img src="<%= us.pic  %>" alt="">
+                  <img src="<%= us.pic%>" alt=""> 
                 </div>
                 <!-- &nbsp; &nbsp; &nbsp; &nbsp; -->
-                <div> <%= us.username.username  %></div>
+                <div> <%= us.username.username %> </div>
             
             </div>
 
             
-
+      <% if(user._id.equals(root)){ %>
             <div class="followBut">
-                <form action="/follow/<%= us._id %>" method="post">
-                <button class="btn btn-primary">Follow</button>
+                <form action="/follow/remove/<%= us._id %>" method="post">
+                <button class="btn rmv">Remove</button>
                </form>
             </div>
+            <% } %>
 
         </div>
+    
 
         <br>
+    
         <% } %>
-        <% } %>
+   
  </div>
+</div>

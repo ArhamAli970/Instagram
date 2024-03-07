@@ -14,7 +14,9 @@ const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const post = require("./models/post.js");
 const asyncWrap=require("./middleware/wrapAsync.js")
-const { access } = require("fs");
+// const { access } = require("fs");
+// const { profile } = require("console");
+const {profileSchema}=require('./schemaProfile.js');
 
 app.use(express.json({ limit: '10mb' }));
 app.use(methodOverride("_method"));
@@ -61,13 +63,7 @@ app.use((req,res,next)=>{
     
 })
 
-app.use("/login",(req,res,next)=>{
-    if(req.user){
 
-    }else{
-        
-    }
-})
 
 
 
@@ -76,20 +72,100 @@ app.get("/search",asyncWrap( async(req,res)=>{
     let {search}=req.query;
     let d=await User.findOne({username:search});
     let posts=await Post.find({author:d._id});
-    let data=await Account.findOne({username:d._id}).populate('username');
-    console.log(posts);
-    console.log(data);
-    // console.log(data._id);
-    res.render("list/account.ejs",{data,posts});
+    let data=await Account.findOne({username:req.user._id})
+    let dem=await Account.findOne({username:d._id}).populate("username");
+
+    // console.log(data,dem);
+ 
+    res.render("list/account.ejs",{data,posts,dem});
 
 }));
+
+app.post("/follow/:id",asyncWrap(async(req,res)=>{
+    let{id}=req.params;
+    console.log(id);
+    let folowing=await Account.findOne({_id:id}).populate("username");
+    let follower=await Account.findOne({username:req.user._id}).populate("username");
+
+    // console.log(folowing,follower);
+    await Account.findByIdAndUpdate(id,{followers:[...folowing.followers,req.user.username]});
+
+    await Account.findByIdAndUpdate(follower._id,{following:[...follower.following,folowing.username.username]});
+    res.redirect('/notification');
+}))
+
+
+
+app.get("/notification",asyncWrap(async(req,res)=>{
+    let data=await Account.findOne({username:req.user._id}).populate('username');
+    let allAcc=await Account.find({}).populate('username');
+    res.render("list/Allusers.ejs",{allAcc,data});
+}))
+
+
+app.post("/follow/remove/:id",asyncWrap(async(req,res)=>{
+    let {id}=req.params;
+ let mai=await Account.findOne({username:req.user._id}).populate('username');
+
+ let other=await Account.findOne({_id:id}).populate('username');
+
+ let data=other.following;
+ data=data.filter((d)=>{
+    return d!=req.user.username;
+ })
+
+// console.log(mai,other);
+
+
+await Account.findByIdAndUpdate(id,{following:data});
+
+let data2=mai.followers;
+
+data2=data2.filter((d)=>{
+    return d!=other.username.username;
+})
+
+
+await Account.findOneAndUpdate({username:req.user._id},{followers:data2});
+
+
+
+ res.redirect(`/getFollowers/${mai._id}`);
+
+}))
+
+
+app.get("/getFollowers/:id",asyncWrap(async(req,res)=>{
+let{id}=req.params;
+// console.log(id);
+let data=await Account.findOne({username:req.user._id}).populate('username');
+let d=await Account.findOne({_id:id});
+let arr=d.followers;
+let ans=[];
+
+let pro=arr.map(async(user)=>{
+   let us=await User.findOne({username:user});
+   let acc=await Account.findOne({username:us._id}).populate('username');
+   ans.push(acc);
+})
+
+await Promise.all(pro);
+
+console.log(d.username._id,req.user._id);
+
+res.render("list/follower.ejs",{ans,data,root:d.username._id});
+}))
+
+
 
 
 
 app.get("/insta",asyncWrap(async(req,res)=>{
     let posts=await Post.find({}).populate('author');
+    let data=await Account.findOne({username:req.user._id}).populate("username")
+
     // console.log(posts);
-    res.render('list/insta.ejs',{posts});
+    res.render('list/insta.ejs',{posts,data});
 
 }))
 
@@ -98,20 +174,21 @@ app.get("/instagram",asyncWrap( async(req,res)=>{
     // console.log(id);
     // let post=await Post.findById(id);
     let data=await Account.findOne({username:req.user._id}).populate('username');
+    let dem=await Account.findOne({username:req.user._id}).populate('username');
     
-
     let posts=await Post.find({author:req.user._id});
 
-    console.log(data);
+    // console.log(data);
     // console.log(data.pic);
-    res.render("list/account.ejs",{data,posts});
+    res.render("list/account.ejs",{dem,data,posts});
     // res.send("hello");
 }))
 
-app.get("/createPost/:id",(req,res)=>{
+app.get("/createPost/:id",asyncWrap(async(req,res)=>{
     let {id}=req.params;
-    res.render("list/create.ejs",{id});
-})
+    let data=await Account.findOne({username:req.user._id}).populate('username');
+    res.render("list/create.ejs",{id,data});
+}));
 
 app.get("/editProf/:id",asyncWrap(async(req,res)=>{
 let{id}=req.params;
@@ -121,15 +198,16 @@ res.render('list/editProfile.ejs',{data});
 
 app.put("/editProf/:id",asyncWrap( async(req,res)=>{
     let{id}=req.params;
-
+    profileSchema.validate(req.body);
     let {pic,bio}=req.body;
 
     // let data=await Account.findById("65dda0270f0310ea30f946d5");
     // console.log(data);
     // res.send("Dfd");
     let data=await Account.findByIdAndUpdate(id,{$set:{pic:pic,bio:bio}},{runValidators:true,new:true});
-    // console.log(data);
-    res.redirect(`/instagram`)
+    // console.log(data,"hi");
+
+    res.redirect("/instagram");
 }))
 
 
@@ -156,7 +234,7 @@ app.post("/like/:id",asyncWrap( async(req,res)=>{
 
 
 
-app.post("/createPost/:id",asyncWrap((req,res)=>{
+app.post("/createPost/:id",asyncWrap(async(req,res)=>{
     // let{id}=req.params;
     let {url,caption}=req.body;
     let newPost= new Post({
@@ -165,7 +243,7 @@ app.post("/createPost/:id",asyncWrap((req,res)=>{
       like:[],
       caption:caption 
     })
-    newPost.save();
+    await newPost.save();
     res.redirect('/insta')
 }))
 
@@ -235,11 +313,13 @@ app.post("/logout",asyncWrap(async(req,res,next)=>{
 
 
 app.use((err,req,res,next)=>{
+    console.log(err);
     res.send("error occurs");
 })
 
 
 app.get("*",(req,res)=>{
+
 res.send("Page Not found");
 })
 
