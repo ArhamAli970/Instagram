@@ -24,6 +24,7 @@ app.use(express.urlencoded({extended:true}));
 app.engine('ejs', ejsMate);
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
+app.use(express.static(path.join(__dirname, 'public')))
 
 main().catch(err => console.log(err));
 
@@ -135,6 +136,63 @@ await Account.findOneAndUpdate({username:req.user._id},{followers:data2});
 }))
 
 
+
+app.post("/unfollow/:id",asyncWrap(async(req,res)=>{
+    let {id}=req.params;
+ let mai=await Account.findOne({username:req.user._id}).populate('username');
+
+ let other=await Account.findOne({_id:id}).populate('username');
+
+ let data=other.followers;
+ data=data.filter((d)=>{
+    return d!=req.user.username;
+ })
+
+// console.log(mai,other);
+
+
+await Account.findByIdAndUpdate(id,{followers:data});
+
+let data2=mai.following;
+
+data2=data2.filter((d)=>{
+    return d!=other.username.username;
+})
+
+
+await Account.findOneAndUpdate({username:req.user._id},{following:data2});
+
+
+
+ res.redirect(`/getFollowing/${mai._id}`);
+
+}))
+
+
+
+app.get("/getFollowing/:id",asyncWrap(async(req,res)=>{
+    let{id}=req.params;
+    let data=await Account.findOne({username:req.user._id}).populate('username');
+let d=await Account.findOne({_id:id});
+let arr=d.following;
+let ans=[];
+
+console.log(arr);
+
+// res.send("hello");
+let pro=arr.map(async(user)=>{
+   let us=await User.findOne({username:user});
+   let acc=await Account.findOne({username:us._id}).populate('username');
+   ans.push(acc);
+})
+
+await Promise.all(pro);
+
+res.render("list/following.ejs",{ans,data,root:d.username._id});
+}))
+
+
+
 app.get("/getFollowers/:id",asyncWrap(async(req,res)=>{
 let{id}=req.params;
 // console.log(id);
@@ -151,10 +209,14 @@ let pro=arr.map(async(user)=>{
 
 await Promise.all(pro);
 
-console.log(d.username._id,req.user._id);
+// console.log(d.username._id,req.user._id);
 
 res.render("list/follower.ejs",{ans,data,root:d.username._id});
 }))
+
+
+
+
 
 
 
@@ -290,7 +352,7 @@ app.get("/login",(req,res)=>{
 
 app.post("/login",passport.authenticate('local',{failureRedirect:'/login',failureFlash:true}),(req,res)=>{
     try{
-    req.flash("success","sing up done");
+    // req.flash("success","sing up done");
     res.redirect("/insta");
     }catch(e){
         req.flash("error",e.message);

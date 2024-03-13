@@ -1,6 +1,4 @@
-<% layout("layout/boilerplate.ejs") %>
 
-<!-- <style>
     .kanPost{
         display: flex;
         flex-direction: column;
@@ -52,43 +50,3 @@
     .rmv:hover{
         opacity: 0.6;
     }
-
-
-</style> -->
-
-<div>
-    
-
- <div class="kanPost ">
-    <% for(us of ans) { %>
-
-     
-        <div class="userFoll ">
-            
-            <div class="userProf">
-                <div class="userpc">
-                  <img src="<%= us.pic%>" alt=""> 
-                </div>
-                <!-- &nbsp; &nbsp; &nbsp; &nbsp; -->
-                <div> <%= us.username.username %> </div>
-            
-            </div>
-
-            
-      <% if(user._id.equals(root)){ %>
-            <div class="followBut">
-                <form action="/follow/remove/<%= us._id %>" method="post">
-                <button class="btn rmv">Remove</button>
-               </form>
-            </div>
-            <% } %>
-
-        </div>
-    
-
-        <br>
-    
-        <% } %>
-   
- </div>
-</div>

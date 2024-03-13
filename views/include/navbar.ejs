@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<style>
-  ul{
+<!-- <style>
+   ul{
     display: flex;
   }
   i{
@@ -34,6 +34,9 @@
     border-radius: 50%;
     /* object-fit; */
   }
+  .srh form{
+    display: flex !important;
+  }
   .proPic img{
     height: 100%;
     width: 100%;
@@ -43,8 +46,8 @@
   ul form button{
     border: none;
     background-color: white;
-  }
-</style>
+  } 
+</style> -->
 <body>
   <nav class="navbar">
 
@@ -52,9 +55,15 @@
       <h3>Instagram</h3>
     </div>
 
+    <!-- <div class="srh">
+    <form class="form-inline my-2 my-lg-0" action="/search" method="get">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div> -->
+
     <div class="srh">
        <form action="/search" method="get">
-        <input type="search" name="search"><button class="btn btn-primary">search</button>
+        <input class="form-control"  type="search" name="search"><button class="btn btn-primary">search</button>
        </form>
     </div>
 

@@ -1,6 +1,4 @@
-<% layout("layout/boilerplate.ejs") %>
 
-<!-- <style>
     .kanPost{
         display: flex;
         flex-direction: column;
@@ -46,37 +44,3 @@
 
 
 
-</style> -->
-
-<h4>Recommendations</h4>
-
- <div class="kanPost ">
-
-    <% for(us of allAcc) { %>
-
-           <% if(!user._id.equals(us.username._id) && !data.following.includes(us.username.username)){ %> 
-        <div class="userFoll ">
-            
-            <div class="userProf">
-                <div class="userpc">
-                  <img src="<%= us.pic  %>" alt="">
-                </div>
-                <!-- &nbsp; &nbsp; &nbsp; &nbsp; -->
-                <div> <%= us.username.username  %></div>
-            
-            </div>
-
-            
-
-            <div class="followBut">
-                <form action="/follow/<%= us._id %>" method="post">
-                <button class="btn btn-primary">Follow</button>
-               </form>
-            </div>
-
-        </div>
-
-        <br>
-        <% } %>
-        <% } %>
- </div>

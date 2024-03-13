@@ -1,0 +1,41 @@
+ul{
+    display: flex;
+  }
+  i{
+    font-size: 1.5rem;
+  }
+  li{list-style: none;
+  padding: 0.4rem;
+  }
+  nav{
+    border-bottom: 1px solid black;
+    /* position: fixed !important; */
+    /* top: 0px !important; */
+    width: 100%;
+  }
+  .navbar h3{
+  
+  font-family: "Satisfy", cursive;
+  font-weight: 400;
+  font-style: normal;
+
+  }
+  .proPic{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* object-fit; */
+  }
+  .srh form{
+    display: flex !important;
+  }
+  .proPic img{
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  ul form button{
+    border: none;
+    background-color: white;
+  }

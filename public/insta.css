@@ -1,0 +1,45 @@
+
+      .instagram-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .instagram-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            margin-bottom: 8px;
+        }
+
+        .card-meta {
+        
+            font-size: 12px;
+            color: #999;
+
+        }
+        .like-btn {
+            color: #ff0000; /* Like button color */
+            /* background-color: red; */
+            cursor: pointer;
+            background-color: white;
+            border: none;
+        }
+
+        .unlike-btn {
+            color: black; /* Like button color */
+            cursor: pointer;
+            background-color: white;
+            border: none;
+        }

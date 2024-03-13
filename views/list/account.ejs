@@ -1,7 +1,7 @@
 <%- layout("layout/boilerplate.ejs")  %>
 
 
-<style>
+<!-- <style>
     .acc{
         display: flex;
         /* border: 1px solid black; */
@@ -79,7 +79,7 @@ h5{
   border: none !important;
   background-color: white !important;
 }
-</style>
+</style> -->
 
 <!-- -->
 <div class="acc">
@@ -121,7 +121,7 @@ h5{
           </li>
 
             
-            <form action="/getFollowing" >
+            <form action="/getFollowing/<%=dem._id%>" >
             <li> <button class="btn folB" ><b> <%= dem.following.length%></b> following</button> </li>
           </form>
     </ul>
