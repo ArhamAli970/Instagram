@@ -37,15 +37,16 @@ object-fit: cover;
     .signBt{
         width: 70% !important;
     }
+    a{
+        text-decoration: none;
+    }
    
 
 </style>
 <body>
     
 
-        <% if(error.length!=0){ %>
-            <%=error %>
-                    <% } %>
+       
 
     <div class="log">
 
@@ -54,7 +55,13 @@ object-fit: cover;
         </div>
 
         <div class="signForm">
+          
             <form method="post" action="/login">
+                <% if(error.length!=0){ %>
+                <div class="mb-3 alert alert-danger" role="alert" >
+                    <%=error %>
+                </div>
+                <% } %>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -63,6 +70,10 @@ object-fit: cover;
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <div class="mb-3">
+                     <a href="/signup">Create Account</a>
                 </div>
           
                 <button type="submit" class="signBt btn btn-primary">Login</button>

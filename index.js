@@ -66,10 +66,18 @@ app.use((req,res,next)=>{
 
 
 
+let isLogged=(req,res,next)=>{
+    if(!req.isAuthenticated()){
+       return res.redirect('/login');
+    }
+    next()
+}
 
 
 
-app.get("/search",asyncWrap( async(req,res)=>{
+
+
+app.get("/search",isLogged,asyncWrap( async(req,res)=>{
     let {search}=req.query;
     let d=await User.findOne({username:search});
     let posts=await Post.find({author:d._id});
@@ -82,7 +90,7 @@ app.get("/search",asyncWrap( async(req,res)=>{
 
 }));
 
-app.post("/follow/:id",asyncWrap(async(req,res)=>{
+app.post("/follow/:id",isLogged,asyncWrap(async(req,res)=>{
     let{id}=req.params;
     console.log(id);
     let folowing=await Account.findOne({_id:id}).populate("username");
@@ -97,7 +105,7 @@ app.post("/follow/:id",asyncWrap(async(req,res)=>{
 
 
 
-app.get("/notification",asyncWrap(async(req,res)=>{
+app.get("/notification",isLogged,asyncWrap(async(req,res)=>{
     let data=await Account.findOne({username:req.user._id}).populate('username');
     let allAcc=await Account.find({}).populate('username');
     res.render("list/Allusers.ejs",{allAcc,data});
@@ -137,7 +145,7 @@ await Account.findOneAndUpdate({username:req.user._id},{followers:data2});
 
 
 
-app.post("/unfollow/:id",asyncWrap(async(req,res)=>{
+app.post("/unfollow/:id",isLogged,asyncWrap(async(req,res)=>{
     let {id}=req.params;
  let mai=await Account.findOne({username:req.user._id}).populate('username');
 
@@ -170,7 +178,7 @@ await Account.findOneAndUpdate({username:req.user._id},{following:data2});
 
 
 
-app.get("/getFollowing/:id",asyncWrap(async(req,res)=>{
+app.get("/getFollowing/:id",isLogged,asyncWrap(async(req,res)=>{
     let{id}=req.params;
     let data=await Account.findOne({username:req.user._id}).populate('username');
 let d=await Account.findOne({_id:id});
@@ -193,7 +201,7 @@ res.render("list/following.ejs",{ans,data,root:d.username._id});
 
 
 
-app.get("/getFollowers/:id",asyncWrap(async(req,res)=>{
+app.get("/getFollowers/:id",isLogged,asyncWrap(async(req,res)=>{
 let{id}=req.params;
 // console.log(id);
 let data=await Account.findOne({username:req.user._id}).populate('username');
@@ -222,7 +230,7 @@ res.render("list/follower.ejs",{ans,data,root:d.username._id});
 
 
 
-app.get("/insta",asyncWrap(async(req,res)=>{
+app.get("/insta",isLogged,asyncWrap(async(req,res)=>{
     let posts=await Post.find({}).populate('author');
     let data=await Account.findOne({username:req.user._id}).populate("username")
 
@@ -231,7 +239,7 @@ app.get("/insta",asyncWrap(async(req,res)=>{
 
 }))
 
-app.get("/instagram",asyncWrap( async(req,res)=>{
+app.get("/instagram",isLogged,asyncWrap( async(req,res)=>{
     let{id}=req.params;
     // console.log(id);
     // let post=await Post.findById(id);
@@ -246,19 +254,19 @@ app.get("/instagram",asyncWrap( async(req,res)=>{
     // res.send("hello");
 }))
 
-app.get("/createPost/:id",asyncWrap(async(req,res)=>{
+app.get("/createPost/:id",isLogged,asyncWrap(async(req,res)=>{
     let {id}=req.params;
     let data=await Account.findOne({username:req.user._id}).populate('username');
     res.render("list/create.ejs",{id,data});
 }));
 
-app.get("/editProf/:id",asyncWrap(async(req,res)=>{
+app.get("/editProf/:id",isLogged,asyncWrap(async(req,res)=>{
 let{id}=req.params;
 let data=await Account.findOne({_id:id});
 res.render('list/editProfile.ejs',{data});
 }))
 
-app.put("/editProf/:id",asyncWrap( async(req,res)=>{
+app.put("/editProf/:id",isLogged,asyncWrap( async(req,res)=>{
     let{id}=req.params;
     profileSchema.validate(req.body);
     let {pic,bio}=req.body;
@@ -273,7 +281,7 @@ app.put("/editProf/:id",asyncWrap( async(req,res)=>{
 }))
 
 
-app.post("/like/:id",asyncWrap( async(req,res)=>{
+app.post("/like/:id",isLogged,asyncWrap( async(req,res)=>{
     let {id}=req.params;
     let data=await Post.findOne({_id:id});
     // console.log(data,req.user);
@@ -296,7 +304,7 @@ app.post("/like/:id",asyncWrap( async(req,res)=>{
 
 
 
-app.post("/createPost/:id",asyncWrap(async(req,res)=>{
+app.post("/createPost/:id",isLogged,asyncWrap(async(req,res)=>{
     // let{id}=req.params;
     let {url,caption}=req.body;
     let newPost= new Post({
@@ -314,6 +322,7 @@ app.get("/signup",(req,res)=>{
     res.render("list/sign.ejs");
 })
 app.post("/sign",asyncWrap(async(req,res)=>{
+    try{
    let {mail,username,password}=req.body;
 //   console.log(pic);
     const newUser= new User({mail,username});
@@ -331,9 +340,14 @@ app.post("/sign",asyncWrap(async(req,res)=>{
 
     req.flash("success","u have sign in")
     res.redirect("/login")
+}
+catch(e){
+    req.flash("error",e.message);
+    res.redirect('/signup');
+}
 }))
 
-app.post('/saveImg',asyncWrap(async(req,res,next)=>{
+app.post('/saveImg',isLogged,asyncWrap(async(req,res,next)=>{
 
     let url=req.body.url;
     let h5=req.body.h5;
