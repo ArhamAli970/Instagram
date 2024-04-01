@@ -33,7 +33,7 @@
 
 
     
-            <div class="instamess rmv">
+            <div class="instamess rm">
                 <div class="uspc">
                   <img src="" class="photo" alt=""> 
                 </div>
@@ -50,7 +50,7 @@
         <ul id="messages"></ul>
 
 
-       <div class="sendChats">
+       <div class="sendChats rm">
            
         <form action="" class="frm">
         <div class="sendBox">
@@ -144,7 +144,9 @@ function scrollToBottom() {
 
     function fun(id){
         let d=document.querySelector('.instamess');
-        d.classList.remove('rmv');
+        let s=document.querySelector('.sendChats');
+        s.classList.remove('rm');
+        d.classList.remove('rm');
         console.log(id);
         d.style.display='flex';
         div.setAttribute('id',id);
