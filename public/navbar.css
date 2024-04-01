@@ -8,6 +8,10 @@
   -ms-overflow-style: none;
 }
 
+#url{
+  width: 100% !important;
+}
+
 ul{
     display: flex;
   }

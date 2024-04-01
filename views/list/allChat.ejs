@@ -1,125 +1,21 @@
 <% layout("layout/boilerplate.ejs") %>
 
 <style>
-
-.chatRoom{
-    display: flex;
-    height: 100vh;
-}
-
-.users{
-    border: 1px solid black;
-    flex: 30%;
-    text-decoration: none;
-    color: black;
-}
-
-.realTimeChats{
-    border: 1px solid black;
-    flex: 70%;
-    position: relative;
-    /* height: 100%; */
-}
-
-.mar{
-    margin: 0rem;
-}
-
-input{
-    margin: 0.6rem;
-    width: 65% !important;
-}
-
-
-#btt{
-    display:  inline-block !important;
-}
-
-.sendBox{
-    display: flex;
-    width: 100%;
-    align-items: center;
-    background-color: white;
-    position: absolute;
-    bottom: 0px;
-    right: 0;
-    left: 0;
-
-}
-
-#btt1{
-    height: 80%;
-    flex: 90%;
-}
-#snd{
-    flex: 10%;
-    height: 80%;
-    border: none !important;
-    background-color: lightblue;
-}
-
-.frnd{
-    height: 5rem;
-    
-    padding: 0.5rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1px solid black;
-}
-.frnd:hover{
-    cursor: pointer;
-    opacity: 0.8;
-}
-.userImg{
-    height: 80%;
-    width: 4rem;
-    border-radius:50% ;
-    border: none;
-}
-.userImg img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-    border-radius:50% ;
-
-}
-#messages{
-    display: block;
-    height: 90%;
-    overflow-y: scroll;
-}
-
-.fl{
-    display: flex;
-    align-items: center;
-}
-.sp1{
-    background-color: lightblue;
-    padding: 0.5rem;
-    border-radius: 4px;
-}
-.sp2{
-    background-color: lightgray;
-    padding: 0.5rem;
-    border-radius: 4px;
-
-}
-
-
+    .mar{
+        margin: 0rem;
+    }
 </style>
+
+
 
 <div class="chatRoom" id="<%= data._id %>">
 
     <div class="users">
 
-        <!-- <form action="/searchUser" method="get">
-            <input class="form-control"  id="btt" type="search" name="search"><button class="btn btn-success">search</button>
-        </form> -->
     
         <% for(user of ans ){%>
         <a  onclick="fun('<%= user._id %>')">
-            <div class="frnd">
+            <div class="frnd" id="<%=user._id %>">
                 <div class="userImg">
                     <img src=<%= user.pic %> alt="">
                 </div>
@@ -133,7 +29,23 @@ input{
 
     </div>
 
-    <div class="realTimeChats">
+    <div class="realTimeChats" >
+
+
+    
+            <div class="instamess rmv">
+                <div class="uspc">
+                  <img src="" class="photo" alt=""> 
+                </div>
+                <!-- &nbsp; &nbsp; &nbsp; &nbsp; -->
+                <div class="name"></div>
+            
+            </div>
+
+        
+
+        
+
 
         <ul id="messages"></ul>
 
@@ -187,14 +99,15 @@ frm.addEventListener('submit',(e)=>{
 
 
 socket.on('chat mess',(mess)=>{
-    
+  
+    if(div.id==mess.from || div.id==mess.to){
     const item = document.createElement('li');
     item.classList.add('fl');
     const sp= document.createElement('span');
 
     sp.textContent = mess.message;
     item.append(sp);
-    console.log("hei");
+    
 
 
     if(div.id==mess.from){
@@ -210,21 +123,41 @@ socket.on('chat mess',(mess)=>{
 
     messages.append(item);
     // messages.append();
+}
 
-    window.scrollTo(0, document.body.scrollHeight);
+    // window.scrollTo(0, document.body.scrollHeight);
+
+   
+
+// if (isScrolledToBottom) {
+    scrollToBottom();
+
 
 })
 
+function scrollToBottom() {
+    // console.log("df");
+    const messagesContainer = document.getElementById("messages");
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
 
 
     function fun(id){
+        let d=document.querySelector('.instamess');
+        d.classList.remove('rmv');
+        console.log(id);
+        d.style.display='flex';
         div.setAttribute('id',id);
+        let pht=document.querySelector('.photo');
+        let nm=document.querySelector('.name');
         msg.innerHTML='';
         axios.get(`/getChats/${id}/${user.id}`)
         .then((res)=>{
+            pht.setAttribute('src',res.data.url);
+            nm.innerText=res.data.name;
             let chats=res.data.chats;
              for( let chat of chats){
-                console.log(chat.content);
+                // console.log(chat.content);
     const item = document.createElement('li');
     item.classList.add('fl');
     const sp= document.createElement('span');
@@ -248,6 +181,8 @@ socket.on('chat mess',(mess)=>{
 
 
              }
+             scrollToBottom();
+
         })
         .catch((err)=>{
             console.log(err.message);

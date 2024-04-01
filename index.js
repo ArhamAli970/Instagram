@@ -424,9 +424,15 @@ app.get("/getChats/:id/:user",asyncWrap(async(req,res)=>{
 
     let chats =await Chat.find({$or:[ { $and :[ {receiver:id} ,{sender:user}  ]  } ,  { $and :[ {sender:id} ,{receiver:user}  ]   } ]}).populate('sender').populate('receiver');
 
+    let rec=await Account.findById(id).populate('username');
+
+
+    let name=rec.username.username;
+    let url=rec.pic;
+
 
     
-    res.json({chats:chats});
+    res.json({chats:chats,name:name,url:url});
 }))
 
 
@@ -450,12 +456,12 @@ io.on('connection',(socket)=>{
 
         const recipientSocketId = users[to]; // Get th\e socketId of the recipient
         if (recipientSocketId) {
-            io.to(recipientSocketId).emit('chat mess', { message: mess,from:from });
+            io.to(recipientSocketId).emit('chat mess', { message: mess,from:from,to:to });
            
 
         } 
 
-        io.to(socket.id).emit('chat mess', {message: mess });
+        io.to(socket.id).emit('chat mess', {message: mess,from:from,to:to  });
 
 
     })
