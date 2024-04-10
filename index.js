@@ -85,12 +85,30 @@ let isLogged=(req,res,next)=>{
 }
 
 
+app.get('/search/:name',asyncWrap(async(req,res)=>{
+    let {name}=req.params;
+    let ans=[]
+
+    if(name!=''){
+    const result = await User.find({ username: { $regex: '^'+ name, $options: 'i' } });
+
+    result.forEach((e)=>{
+        ans.push(e.username);
+    })
+
+    // console.log(ans);
+    }
+ 
+    res.json({ans:ans});
+}))
+
 
 
 
 app.get("/search",isLogged,asyncWrap( async(req,res)=>{
-    let {search}=req.query;
-    let d=await User.findOne({username:search});
+    let {name}=req.query;
+    // console.log(req.query,search);
+    let d=await User.findOne({username:name});
     let posts=await Post.find({author:d._id});
     let data=await Account.findOne({username:req.user._id})
     let dem=await Account.findOne({username:d._id}).populate("username");
@@ -314,22 +332,25 @@ app.put("/editProf/:id",isLogged,asyncWrap( async(req,res)=>{
 
 app.post("/like/:id",isLogged,asyncWrap( async(req,res)=>{
     let {id}=req.params;
+    // console.log(id);
     let data=await Post.findOne({_id:id});
     
     let likesArray=data.like;
 
+    let d={};
+
     if(!likesArray.includes(req.user.username)){
- await Post.findByIdAndUpdate(id,{like:[...likesArray,req.user.username]});
+ d=await Post.findByIdAndUpdate(id,{like:[...likesArray,req.user.username]},{new:true});
     }
     else{
         likesArray=likesArray.filter((ele)=>{
             return ele!=req.user.username;
         })
-        await Post.findByIdAndUpdate(id,{like:[...likesArray]});
+        d=await Post.findByIdAndUpdate(id,{like:[...likesArray]},{new:true});
     }
 
-    // await Post.findByIdAndUpdate(id,{like:[...likesArray,req.user.username]});
-    res.redirect('/insta');
+  
+    res.json({val:d.like.length});
 })
 )
 

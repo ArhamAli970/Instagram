@@ -1,4 +1,6 @@
-
+.hidden{
+ display: none;       
+}
       .instagram-card {
             border: 1px solid #e1e1e1;
             border-radius: 8px;
@@ -29,17 +31,18 @@
             color: #999;
 
         }
-        .like-btn {
-            color: #ff0000; /* Like button color */
-            /* background-color: red; */
+        .lbtn{
             cursor: pointer;
             background-color: white;
             border: none;
         }
+        .lk{
+            color: #ff0000; /* Like button color */
+            /* background-color: red; */
+          
+        }
 
-        .unlike-btn {
+        .uk{
             color: black; /* Like button color */
-            cursor: pointer;
-            background-color: white;
-            border: none;
+            /* background-color: white; */
         }

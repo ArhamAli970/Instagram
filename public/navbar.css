@@ -28,6 +28,7 @@ ul{
     border-bottom: 1px solid black;
     /* position: fixed !important; */
     /* top: 0px !important; */
+    position: relative !important; 
     width: 100%;
   }
   .navbar h3{
@@ -43,6 +44,9 @@ ul{
     border-radius: 50%;
     /* object-fit; */
   }
+  .srh{
+    position: relative;
+  }
   .srh form{
     display: flex !important;
   }
@@ -55,4 +59,32 @@ ul{
   ul form button{
     border: none;
     background-color: white;
+  }
+
+  .UserD{
+    display: block;
+    text-align: center;
+    padding: 0.5rem;
+    
+  }
+  .UserD a{
+    text-decoration: none;
+    color: black;
+  }
+
+
+
+  
+
+  .UserDisp{
+    z-index: 1;
+    top: 80%;
+    border-radius: 0.5rem;
+    position: absolute;
+    background-color: whitesmoke;
+    width: 100%;
+  }
+
+  .dp{
+    display: none;
   }

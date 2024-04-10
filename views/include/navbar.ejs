@@ -17,8 +17,16 @@
 
     <div class="srh">
        <form action="/search" method="get">
-        <input class="form-control"  type="search" name="search"><button class="btn btn-primary">search</button>
-       </form>
+        <input class="form-control searchUser" name="name"  type="search" >  <button class="btn btn-primary"> Search</button>
+        
+    
+      <div class="UserDisp dp">>
+        <ul class="UserD">
+        </ul>
+       </div>
+
+      </form>
+   
     </div>
 
     <div class="ico">
@@ -67,4 +75,57 @@
   </nav>
 
 </body>
+
+<script>
+
+
+
+let user=document.querySelector('.searchUser')
+let list=document.querySelector('.UserD')
+let proList=document.querySelector('.UserDisp');
+
+
+
+user.addEventListener("input",async(e)=>{
+e.preventDefault();
+  let val=user.value;
+  list.innerHTML="";
+  if(user.value==''){
+    proList.classList.add('dp');
+  }else{
+    proList.classList.remove('dp');
+
+  }
+
+
+  if(val!=''){
+
+  await axios.get(`/search/${val}`)
+  .then((res)=>{
+    let {ans}=res.data;
+    console.log(ans);
+    if(ans.length!=0){
+       ans.forEach((e)=> {
+           let ele=document.createElement('li');
+           let an=document.createElement('a');
+           an.setAttribute('href',`/search/?name=${e}`);
+           ele.innerHTML=e;
+           an.append(ele);
+           console.log(an);
+           list.appendChild(an);
+       });
+    }
+    
+
+
+  })
+  .catch((err)=>{
+    console.log(err.message);
+  })
+}
+
+})
+
+
+</script>
 </html>
