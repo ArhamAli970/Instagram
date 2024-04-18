@@ -135,7 +135,7 @@ transition: 5ms;
   display: block;
 }
 .ico ul button{
-  background-color: rgba(239, 239, 240, 0.8);
+  background-color: transparent;
 }
 .ico ul{
   flex-direction: column;
