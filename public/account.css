@@ -1,3 +1,6 @@
+*{
+    box-sizing: border-box;
+}
 .acc{
     display: flex;
     /* border: 1px solid black; */
@@ -11,7 +14,7 @@ ul{
     align-items: center;
 }
 li{padding: 0.6rem;}
-.prof{flex: 30%;}
+.prof{flex: 30%; display: flex;}
 .fol{flex: 70%; display: flex;
  flex-direction: column;
  /* justify-items; */
@@ -75,4 +78,37 @@ visibility: hidden;
 .folB{
 border: none !important;
 background-color: white !important;
+}
+
+
+@media (max-width:700px) {
+
+    .acc{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .fol{
+        justify-content: center;
+        align-items: center;
+    }
+    .prof{
+         justify-content: center;
+    }
+    .fol li{
+        padding: 0.2rem;
+    }
+    .usPost{
+        width: 100%;
+    }
+    .user1{
+        height: 10rem;
+        width: 10rem;
+    }
+
+    .post{
+        flex-direction: column;
+        justify-content: center;
+    }
+
 }

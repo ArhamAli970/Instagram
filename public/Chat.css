@@ -127,3 +127,16 @@ input{
 .rm{
     display: none;
 }
+
+
+@media(max-width:700px){
+    .userImg{
+        width: 2rem;
+    }
+    .frnd p{
+        font-size: 0.7rem;
+        margin-left: 0.5rem;
+    }
+
+
+}

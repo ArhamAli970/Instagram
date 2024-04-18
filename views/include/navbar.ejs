@@ -9,18 +9,21 @@
 <body>
   <nav class="navbar">
 
-    <div style="padding-left: 1rem;">
+    <button class="bb" onclick="sideBar()"><i class="fa-solid fa-bars"></i></button>
+
+    <div style="padding-left: 1rem;" class="ht">
       <h3>Instagram</h3>
+      
     </div>
 
 
 
     <div class="srh">
        <form action="/search" method="get">
-        <input class="form-control searchUser" name="name"  type="search" >  <button class="btn btn-primary"> Search</button>
+        <input class="form-control searchUser" name="name"  type="search" ><button class=" nbt btn btn-primary"> Search</button>
         
     
-      <div class="UserDisp dp">>
+      <div class="UserDisp dp">
         <ul class="UserD">
         </ul>
        </div>
@@ -30,6 +33,7 @@
     </div>
 
     <div class="ico">
+      <button class="bb1" onclick="sideBar()"><i class="fa-solid fa-xmark"></i></button>
       <ul>
        <li>
         <form action="/insta" method="get"><button><i class="fa-solid fa-house"></i></button></form>
@@ -83,6 +87,27 @@
 let user=document.querySelector('.searchUser')
 let list=document.querySelector('.UserD')
 let proList=document.querySelector('.UserDisp');
+
+
+function sideBar(){
+   let ic = document.querySelector('.ico');
+   let crs=document.querySelector('.bb1');
+  //  let br=document.querySelector('.bb');
+
+  console.log(crs.style.display);
+
+   if(crs.style.display=='none' || crs.style.display==''){
+   ic.style.left='0px';
+  //  br.style.display='none';
+   crs.style.display='inline-block';
+   }else{
+ ic.style.left='-1000px';
+   crs.style.display='none';
+  //  br.style.display='inline-block';
+
+
+   }
+}
 
 
 

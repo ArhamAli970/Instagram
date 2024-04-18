@@ -48,3 +48,17 @@
     .rmv:hover{
         opacity: 0.6;
     }
+
+
+@media(max-width:700px){
+    .userFoll{
+        width: 100%;
+    }
+    .followBut button{
+        width: 5rem;
+        height: 2.5rem;
+        border-radius: 0.4rem;
+        border: none;
+        font-size: 0.8rem;
+    }
+}

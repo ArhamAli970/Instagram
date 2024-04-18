@@ -21,16 +21,16 @@
 
        <% if(user.username===dem.username.username){%> 
        <form action="/editProf/<%=data._id%>" method="get">
-           <button class="btn ">Edit Profile</button>
+           <button class="btn eProf">Edit Profile</button>
        </form>
        <% } %>
     </ul>
     <ul>
+      <li>
       <button class="btn folB">
-            <li>
-               <b> <%= posts.length  %> </b> posts </li>
-         
+               <b> <%= posts.length  %> </b> posts 
         </button>
+      </li>
        
         <li> 
             <form action="/getFollowers/<%= dem._id %>" method="get">
@@ -40,10 +40,13 @@
             </form>
           </li>
 
-            
+          <li>
             <form action="/getFollowing/<%=dem._id%>" >
-            <li> <button class="btn folB" ><b> <%= dem.following.length%></b> following</button> </li>
+            
+               <button class="btn folB" ><b> <%= dem.following.length%></b> following</button> 
+          
           </form>
+        </li>
     </ul>
     <ul>
       <li>  <p><%= dem.bio %></p></li>

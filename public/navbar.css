@@ -73,7 +73,25 @@ ul{
   }
 
 
+  .bb{
+    display: none;
+    background-color: white;
+    color: black;
+    border: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 
+  .bb1{
+    display: none ;
+    background-color: rgba(239, 239, 240, 0.8);
+    color: black;
+    border: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
   
 
   .UserDisp{
@@ -87,4 +105,42 @@ ul{
 
   .dp{
     display: none;
+
   }
+
+.searchUser{
+  margin: 0rem !important;
+}
+  .nbt{
+    height: 2.5rem;
+  }
+
+
+@media( max-width:700px){
+.navbar{
+flex-direction: column;
+justify-content: center;
+align-content: space-around;
+}
+.ico{
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+background-color: rgba(239, 239, 240, 0.8);
+z-index: 1;
+transition: 5ms;
+}
+.ham{
+  display: block;
+}
+.ico ul button{
+  background-color: rgba(239, 239, 240, 0.8);
+}
+.ico ul{
+  flex-direction: column;
+}
+.bb{
+  display: inline-block;
+}
+}
